@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -9,21 +10,41 @@ namespace Program
     public class Program
     {
 
+
     
         public static void Main(string[] args)
         {
-            /*
-                Dictionary <string, double> dic = IDF(txtReader());
-            
-                for(int i=0; i<4; i++)
-                TFIDF(TF(txtReader()[i]), dic);
-                */
                 
-                //txtReader();
-            Snippets(SearchResult("epistemologia"));
+                
+                
+                
+                List<List<string>> list = txtReader();
+                Dictionary<string, double> idf = IDF(list);
+                List<Dictionary<string, double>> tfidf_dicc_list = new();
 
+                
+                for(int i = 0; i < list.Count; i++)
+                {                    
+                    tfidf_dicc_list.Add(TFIDF(TF(list[i]), idf));                    
 
-            
+                }
+                
+                 
+              
+              //simulando query
+               List<string> lista = new List<string>();
+               lista.Add("perro");
+               lista.Add("epistemologia");
+               lista.Add("la");
+
+               Dictionary<string, double> tfidf_query = query_tfidf(lista, idf);
+
+                 
+               
+                
+               
+            Cosine_Similarity(tfidf_query, tfidf_dicc_list);
+           
       
         }
     
@@ -50,6 +71,7 @@ namespace Program
                 s = replace_u_Accents.Replace(s, "u");
                 s = replace_c_Accents.Replace(s, "c");
 
+    
         
         return s;
         }
@@ -62,7 +84,7 @@ namespace Program
 
             char[] delimitadores = {' ', '=', '`', ';', '\'', '\t', '.', ',', ':', '-', '_', '/','+', '%','?', '[', ']', '(', ')', '{', '}', '|', 'ª' , 'º', '<', '>' , '¡', '¿', '»', '«', '…', '‥' , '&', '#' , '@', '՛', '՝', '!', '*', '^', '~'} ;
             // Los caracteres !, ^, ~ y * no han sido incluidos porque son para los operadores de busqueda.
-            //EN el query no deben eliminarse, pero en los txt si.
+            //En el query no deben eliminarse, pero en los txt si.
             s = Normalize(s);
 
             return s.Split(delimitadores, StringSplitOptions.RemoveEmptyEntries);
@@ -90,74 +112,58 @@ namespace Program
 
             string ruta = "/home/marian_susana/Documents/Moogle/moogle-main/Content/prueba";
 
-            StreamReader lector = new StreamReader(ruta);
-            string texto = lector.ReadToEnd();
-
             return Directory.GetFiles(ruta, "*.txt", SearchOption.AllDirectories);
 
 
             }
             
 
-            public static List<List<string>> txtReader()
+            public static List<List<string>> txtReader() //eficiencia de 12 segundos para 42mb
             {
             //Lista de Listas
             List<List<string>> Conjunto_de_Listas = new();
 
-            for(int i = 0; i<getFilesNames().Length; i++)
+            //Almacen para el array devuelto por getFilesNames:
+            string[] filesNames = getFilesNames();
+
+            for(int i = 0; i<filesNames.Length; i++)
             {
 
-                List<string> lista = Separador_Palabras(File.ReadAllText(getFilesNames()[i])).ToList();
+                List<string> lista = Separador_Palabras(File.ReadAllText(filesNames[i])).ToList();
                 
                 Conjunto_de_Listas.Add(lista);
 
             }
 
-                //Para imprimir palabra por palabra
-                /*
-                foreach(List<string> items in Conjunto_de_Listas)
-                {
-                    foreach(string elements in items){
-                        
-                        Console.WriteLine(elements);
-                    }
-                }
-                */
                 return Conjunto_de_Listas;
 
         }
 
         //Metodo que calcula el TF.
-        public static Dictionary<string, int> TF(List<string> lista)
+        //14 segundos para 42mb sumando txtReader()
+        public static Dictionary<string, double> TF(List<string> lista) 
         {
 
-            Dictionary<string, int> Dicc = new();
+            Dictionary<string, double> Dicc = new();
 
 
             for(int i = 0; i < lista.Count; i++)
             {
 
-                    if(Dicc.ContainsKey(lista[i])){
-
-                        Dicc[lista[i]]++;
-                    }
-                    else{
-                        Dicc.Add(lista[i], 1);
-                    }
-                    
+                if(!Dicc.ContainsKey(lista[i]))
+                
+                    Dicc.Add(lista[i], 1);
+                
+                else
+                
+                    Dicc[lista[i]]++;                 
+                   
             }  
-
-            
-           // Para imprimir el diccionario
-            /*
-            foreach(KeyValuePair<string, int> value in Dicc){
-                    Console.WriteLine(value);
+            foreach(KeyValuePair<string, double> element in Dicc)
+            {
+                Dicc[element.Key] = Dicc[element.Key]/Dicc.Count; 
             }
-            */
 
-        
-            
-            
             return Dicc;
         }  
 
@@ -174,30 +180,35 @@ namespace Program
 
                     foreach(string word in lista[i])
                     {
-                        double idf;
-                        if(Docs_True(lista, word) != 0)
+                        if(!Dict.ContainsKey(word))
                         {
-                            idf = Math.Log(lista.Count/Docs_True(lista, word));
+                            //cantidad de docs donde aparece la palabra
+                            int docs = Docs_True(lista, word);
+
+                            if(docs != 0)
+                            {
+                                double div = lista.Count/docs;
+
+                                if(div != 1)
+                                { 
+                                Dict.Add(word, Math.Log2(div));
+                                } 
+                                else Dict.Add(word, 0);
+                            }
+                            
+                            else
+                            {
+                                Dict.Add(word, 0);
+                            }
+
                         }
                         
-                        else
-                        {
-                            idf = 0;
-                        }
-
-                        if(!Dict.ContainsKey(word))
-                            Dict.Add(word, idf);
                         
                     }
 
                 }
+            
 
-            // Para imprimir el diccionario
-            /*
-            foreach(KeyValuePair<string, double> value in Dict){
-                    Console.WriteLine(value);
-            }
-            */
             return Dict;
             
             
@@ -220,21 +231,17 @@ namespace Program
         }
 
 
-        public static Dictionary<string, double> TFIDF(Dictionary<string, int> Dicc, Dictionary<string, double> Dict){
+        public static Dictionary<string, double> TFIDF(Dictionary<string, double> Dicc, Dictionary<string, double> Dict){
 
 
             Dictionary<string, double> TFIDF = new();
             
-            foreach(KeyValuePair<string, int> element in Dicc){
-                TFIDF.Add(element.Key, element.Value * Dict[element.Key]);
+            foreach(KeyValuePair<string, double> element in Dicc)
+            {
+
+                if(!TFIDF.ContainsKey(element.Key))
+                    TFIDF.Add(element.Key, element.Value * Dict[element.Key]);
             }
-            
-            // Para imprimir el diccionario
-            /*
-            foreach(KeyValuePair<string, double> value in TFIDF){
-                    Console.WriteLine(value);
-            }
-            */
             
             
             return TFIDF;
@@ -246,16 +253,18 @@ namespace Program
 
         //Normalize y Separador_Palabras_Query
 
-        static string[] SearchResult(string s){
+        static string[] SearchResult(string s)
+        {
 
             //Almacenar query en una lista
             List<string> query = Separador_Palabras_Query(s).ToList();
 
-            //Almacenar idf en un diccionario
-            Dictionary <string, double> dic = IDF(txtReader());
-
-             //Almacenar la lista de listas:
+            //Almacenar la lista de listas:
             List<List<string>> lista_de_listas = txtReader();
+
+            //Almacenar idf en un diccionario
+            Dictionary <string, double> dic = IDF(lista_de_listas);
+
 
              //Almacenar tfidf en una lista de diccionarios:
             List<Dictionary<string, double>> tfidf_list = new List<Dictionary<string, double>>(lista_de_listas.Count);
@@ -266,18 +275,18 @@ namespace Program
                 }
             
 
-                static double[,] Matrix(List<List<string>> list_of_lists, List<string> strings_list, List<Dictionary<string, double>> list_of_dictionaries)
+                static double[,] Matrix(List<List<string>> conj_de_listas, List<string> lista_strings, List<Dictionary<string, double>> lista_de_diccionarios)
                 {
                     //Matriz con las palabras y su tfidf por documentos
-                    double[,] matrix = new double[list_of_lists.Count, strings_list.Count];
+                    double[,] matrix = new double[conj_de_listas.Count, lista_strings.Count];
 
                     for(int i = 0; i < matrix.GetLength(0); i++)
                     {
                         for(int j = 0; j < matrix.GetLength(1); j++)
                         {
-                            if(list_of_dictionaries[i].ContainsKey(strings_list[j]))
+                            if(lista_de_diccionarios[i].ContainsKey(lista_strings[j]))
 
-                            matrix[i,j] = list_of_dictionaries[i][strings_list[j]];
+                            matrix[i,j] = lista_de_diccionarios[i][lista_strings[j]];
 
                             else matrix[i,j] = 0;
                             
@@ -288,7 +297,7 @@ namespace Program
 
                 return matrix;
                 }
-                //Almacena lo devuelto por el metodo matriz en un array bidimensional
+                //Almacena lo devuelto por el metodo Matrix en un array bidimensional
                 double[,] matrix = Matrix(lista_de_listas, query, tfidf_list);
 
                 static double[] Sum(double[,] matrix)
@@ -360,6 +369,7 @@ namespace Program
             }
 
             //Muestra una parte de los textos donde hay resultados de la query. Arreglar.
+            /*
             public static List<string>[] Snippets(string[] path)
             {
                 List<string> result1 = Separador_Palabras(File.ReadAllText(path[0])).ToList();
@@ -390,6 +400,91 @@ namespace Program
 
             
             }
+            */
+            public static Dictionary<string, double> query_tfidf(List<string> query, Dictionary<string, double> idf)
+            {
+                Dictionary<string, double> tfidf_query = new();
+                Dictionary<string, double> tf_query = new();
+
+                tf_query = TF(query);
+                
+                foreach(string word in query)
+                {
+                    if(idf.ContainsKey(word))
+                    {
+                        tfidf_query.Add(word, idf[word] * tf_query[word]);
+                    }
+                    else
+                    {
+                        tfidf_query.Add(word, 0);
+                    }
+                }
+
+                return tfidf_query;
+
+
+            }
+            
+            public static double[] Cosine_Similarity(Dictionary<string, double> tfidf_query, List<Dictionary<string, double>> tfidf_docs)
+            {
+                //Calcular la magnitud del query una sola vez.
+                double magnitud_query = 0;
+                double suma_query = 0;
+
+                    foreach(KeyValuePair<string, double> element in tfidf_query)
+                    {
+                        suma_query+=element.Value*element.Value;
+                    }
+
+                magnitud_query = Math.Sqrt(suma_query);
+
+                //Calcular la magnitud de cada documento.
+
+                double suma_doc = 0;
+                double[] magnitud_doc = new double[tfidf_docs.Count];
+
+                    foreach(Dictionary<string, double> doc in tfidf_docs)
+                    {
+                        foreach(KeyValuePair<string, double> element in doc)
+                        {
+                            suma_doc+=element.Value*element.Value;
+                        }
+
+                        for(int i = 0; i< magnitud_doc.Length; i++)
+                        {
+                            magnitud_doc[i]= Math.Sqrt(suma_doc);
+                        }
+                        
+                    }
+
+                //Calcula la suma punto
+
+                double[] suma_punto = new double[tfidf_docs.Count];
+
+                    for(int i = 0; i<tfidf_docs.Count; i++)
+                    {
+                        foreach(KeyValuePair<string, double> element in tfidf_query)
+                        {
+                            if(tfidf_docs[i].ContainsKey(element.Key))
+                            {
+                                suma_punto[i] += element.Value*tfidf_docs[i][element.Key];
+                            }
+                        }
+                    }
+
+                //Calcula los cosenos de los angulos
+
+                double[] similitud_de_cosenos = new double[tfidf_docs.Count];
+
+                    for(int i = 0; i<similitud_de_cosenos.Length; i++)
+                    {
+                        similitud_de_cosenos[i] = Math.Cos(suma_punto[i]/(magnitud_query*magnitud_doc[i]));
+                    }
+
+                
+                return similitud_de_cosenos;
+            }
+            
 
             
 
@@ -397,3 +492,6 @@ namespace Program
            
     }
 }
+
+//TODO:  Revisar tfidf del query con el tema de la lista. Calcula el tf de la lista dell query mal
+//Revisar el coseno porque no devuelve lo esperado.
