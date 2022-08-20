@@ -25,25 +25,29 @@ namespace Program
                 
                 for(int i = 0; i < list.Count; i++)
                 {                    
-                    tfidf_dicc_list.Add(TFIDF(TF(list[i]), idf));                    
-
+                   tfidf_dicc_list.Add(TFIDF(TF(list[i]), idf));   
                 }
                 
                  
               
               //simulando query
-               List<string> lista = new List<string>();
-               lista.Add("perro");
-               lista.Add("epistemologia");
-               lista.Add("la");
+               List<string> query = new List<string>();
+              
+               query.Add("epistemologia");
+               query.Add("alfabeto");
+               query.Add("alfabeto");
+               query.Add("la");
 
-               Dictionary<string, double> tfidf_query = query_tfidf(lista, idf);
+
+
+               Dictionary<string, double> tfidf_query = query_tfidf(query, idf);
 
                  
                
                 
                
-            Cosine_Similarity(tfidf_query, tfidf_dicc_list);
+           Highest_TFIDF_Docs(Cosine_Similarity(tfidf_query, tfidf_dicc_list));
+    
            
       
         }
@@ -124,7 +128,7 @@ namespace Program
             List<List<string>> Conjunto_de_Listas = new();
 
             //Almacen para el array devuelto por getFilesNames:
-            string[] filesNames = getFilesNames();
+             string[] filesNames = getFilesNames();
 
             for(int i = 0; i<filesNames.Length; i++)
             {
@@ -183,17 +187,13 @@ namespace Program
                         if(!Dict.ContainsKey(word))
                         {
                             //cantidad de docs donde aparece la palabra
-                            int docs = Docs_True(lista, word);
+                            double docs = Docs_True(lista, word);
 
                             if(docs != 0)
                             {
-                                double div = lista.Count/docs;
-
-                                if(div != 1)
-                                { 
-                                Dict.Add(word, Math.Log2(div));
-                                } 
-                                else Dict.Add(word, 0);
+                                                                
+                                Dict.Add(word, Math.Log2(lista.Count/docs));
+                                
                             }
                             
                             else
@@ -253,7 +253,7 @@ namespace Program
 
         //Normalize y Separador_Palabras_Query
 
-        static string[] SearchResult(string s)
+        static void SearchResult(string s)
         {
 
             //Almacenar query en una lista
@@ -273,8 +273,179 @@ namespace Program
                 {
                 tfidf_list.Add(TFIDF(TF(lista_de_listas[i]), dic));
                 }
+        }
+            
+             static Dictionary<string, double> query_tfidf(List<string> query, Dictionary<string, double> idf)
+            {
+                Dictionary<string, double> tfidf_query = new();
+                Dictionary<string, double> tf_query = new();
+
+                tf_query = TF(query);
+                
+                foreach(string word in query)
+                {
+                    if(!tfidf_query.ContainsKey(word))
+                    {
+                        if(idf.ContainsKey(word))
+                        {
+                            tfidf_query.Add(word, idf[word] * tf_query[word]);
+                        }
+                        else
+                        {
+                            tfidf_query.Add(word, 0);
+                        }
+                    }
+                }
+
+                return tfidf_query;
+            }
+
+
+        
+            
+            public static double[] Cosine_Similarity(Dictionary<string, double> tfidf_query, List<Dictionary<string, double>> tfidf_docs)
+            {
+                //Calcular la magnitud del query una sola vez.
+                double magnitud_query = 0;
+                double suma_query = 0;
+
+                    foreach(KeyValuePair<string, double> element in tfidf_query)
+                    {
+                        suma_query+=element.Value*element.Value;
+                    }
+
+                magnitud_query = Math.Sqrt(suma_query);
+
+                //Calcular la magnitud de cada documento.
+
+                double suma_doc = 0;
+                double[] magnitud_doc = new double[tfidf_docs.Count];
+                
+                
+                for(int i = 0; i < magnitud_doc.Length; i++)
+                {
+
+                    foreach(Dictionary<string, double> doc in tfidf_docs)
+                    {
+
+                        foreach(KeyValuePair<string, double> element in doc)
+                        {
+                            suma_doc+=element.Value*element.Value;
+                        }              
+                                                    
+                    }
+                    
+                    magnitud_doc[i] = Math.Sqrt(suma_doc);
+                        
+                }
+
+                //Calcula la suma punto
+
+                double[] suma_punto = new double[tfidf_docs.Count];
+
+                    for(int i = 0; i<tfidf_docs.Count; i++)
+                    {
+                        foreach(KeyValuePair<string, double> element in tfidf_query)
+                        {
+                            if(tfidf_docs[i].ContainsKey(element.Key))
+                            {
+                                suma_punto[i] += element.Value*tfidf_docs[i][element.Key];
+                            }
+                            
+                        }
+                    }
+
+                //Calcula los cosenos de los angulos
+
+                double[] similitud_de_cosenos = new double[tfidf_docs.Count];
+
+                    for(int i = 0; i<similitud_de_cosenos.Length; i++)
+                    {
+                        double magnitudes = magnitud_query*magnitud_doc[i];
+
+                        if(magnitudes == 0)
+                        {
+                        magnitudes = 1;
+                        }
+                        similitud_de_cosenos[i] = (suma_punto[i]/magnitudes);
+
+                        //else similitud_de_cosenos[i] = 0;
+                    }
+
+                
+                return similitud_de_cosenos;
+            }
+
+            static string[] Highest_TFIDF_Docs(double[] cosenos)
+            {
+
+
+            string[] Highest_TFIDF_Docs = new string[3];
+
+                for(int i = 0; i<Highest_TFIDF_Docs.Length; i++)
+                {
+                    Highest_TFIDF_Docs[i] = getFilesNames()[GetArrayLongestPositions(cosenos)[i]];
+                }
+
+                return Highest_TFIDF_Docs;
+
+            }
+
+            public static int[] GetArrayLongestPositions(double[] cosenos)
+            {
+                int max = 0;
+                int med = 0;
+                int low = 0;
+                for(int i = 0; i<cosenos.Length; i++)
+                {
+                    
+                    if(cosenos[i]>cosenos[max])
+                    max = i;
+                }
+
+                for(int i = 0; i<cosenos.Length; i++)
+                {
+
+                    if(i!=max && cosenos[i]>cosenos[med])
+                    {
+                        med = i;
+                    }
+                }
+
+                for(int i = 0; i<cosenos.Length; i++)
+                {
+
+                    if(i!=max && i!=med && cosenos[i]>cosenos[low])
+                    {
+                        low = i;
+                    }
+                }
+                int[] positions = {max, med, low};
+                return positions;
+            }
+
+            
             
 
+            
+
+
+           
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*
                 static double[,] Matrix(List<List<string>> conj_de_listas, List<string> lista_strings, List<Dictionary<string, double>> lista_de_diccionarios)
                 {
                     //Matriz con las palabras y su tfidf por documentos
@@ -322,12 +493,7 @@ namespace Program
             
             
 
-            string[] Highest_TFIDF_Docs = new string[3];
-
-            for(int i = 0; i<Highest_TFIDF_Docs.Length; i++)
-            {
-                Highest_TFIDF_Docs[i] = getFilesNames()[GetArrayLongestPositions(sum)[i]];
-            }
+            
 
             //Todo eso pincha pero esta regado. JEJE
 
@@ -335,38 +501,9 @@ namespace Program
             
 
         }
-        public static int[] GetArrayLongestPositions(double[] array)
-            {
-                int max = 0;
-                int med = 0;
-                int low = 0;
-                for(int i = 0; i<array.Length; i++)
-                {
-                    
-                    if(array[i]>array[max])
-                    max = i;
-                }
+        
 
-                for(int i = 0; i<array.Length; i++)
-                {
-
-                    if(i!=max && array[i]>array[med])
-                    {
-                        med = i;
-                    }
-                }
-
-                for(int i = 0; i<array.Length; i++)
-                {
-
-                    if(i!=max && i!=med && array[i]>array[low])
-                    {
-                        low = i;
-                    }
-                }
-                int[] r = {max, med, low};
-                return r;
-            }
+            */
 
             //Muestra una parte de los textos donde hay resultados de la query. Arreglar.
             /*
@@ -401,97 +538,3 @@ namespace Program
             
             }
             */
-            public static Dictionary<string, double> query_tfidf(List<string> query, Dictionary<string, double> idf)
-            {
-                Dictionary<string, double> tfidf_query = new();
-                Dictionary<string, double> tf_query = new();
-
-                tf_query = TF(query);
-                
-                foreach(string word in query)
-                {
-                    if(idf.ContainsKey(word))
-                    {
-                        tfidf_query.Add(word, idf[word] * tf_query[word]);
-                    }
-                    else
-                    {
-                        tfidf_query.Add(word, 0);
-                    }
-                }
-
-                return tfidf_query;
-
-
-            }
-            
-            public static double[] Cosine_Similarity(Dictionary<string, double> tfidf_query, List<Dictionary<string, double>> tfidf_docs)
-            {
-                //Calcular la magnitud del query una sola vez.
-                double magnitud_query = 0;
-                double suma_query = 0;
-
-                    foreach(KeyValuePair<string, double> element in tfidf_query)
-                    {
-                        suma_query+=element.Value*element.Value;
-                    }
-
-                magnitud_query = Math.Sqrt(suma_query);
-
-                //Calcular la magnitud de cada documento.
-
-                double suma_doc = 0;
-                double[] magnitud_doc = new double[tfidf_docs.Count];
-
-                    foreach(Dictionary<string, double> doc in tfidf_docs)
-                    {
-                        foreach(KeyValuePair<string, double> element in doc)
-                        {
-                            suma_doc+=element.Value*element.Value;
-                        }
-
-                        for(int i = 0; i< magnitud_doc.Length; i++)
-                        {
-                            magnitud_doc[i]= Math.Sqrt(suma_doc);
-                        }
-                        
-                    }
-
-                //Calcula la suma punto
-
-                double[] suma_punto = new double[tfidf_docs.Count];
-
-                    for(int i = 0; i<tfidf_docs.Count; i++)
-                    {
-                        foreach(KeyValuePair<string, double> element in tfidf_query)
-                        {
-                            if(tfidf_docs[i].ContainsKey(element.Key))
-                            {
-                                suma_punto[i] += element.Value*tfidf_docs[i][element.Key];
-                            }
-                        }
-                    }
-
-                //Calcula los cosenos de los angulos
-
-                double[] similitud_de_cosenos = new double[tfidf_docs.Count];
-
-                    for(int i = 0; i<similitud_de_cosenos.Length; i++)
-                    {
-                        similitud_de_cosenos[i] = Math.Cos(suma_punto[i]/(magnitud_query*magnitud_doc[i]));
-                    }
-
-                
-                return similitud_de_cosenos;
-            }
-            
-
-            
-
-
-           
-    }
-}
-
-//TODO:  Revisar tfidf del query con el tema de la lista. Calcula el tf de la lista dell query mal
-//Revisar el coseno porque no devuelve lo esperado.
