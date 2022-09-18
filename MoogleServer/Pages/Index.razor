@@ -1,0 +1,39 @@
+﻿@page "/"
+
+<PageTitle>Moogle!</PageTitle>
+
+<footer style="text-align: right; font-size: 12px;">Moogle! by Marian S.</footer>
+
+<h1>🔍 Moogle!</h1>
+
+<input class="p-1 my-4" @bind="query" placeholder="Introduzca su búsqueda">
+
+<button type="default" class="btn btn-primary" @onclick="RunQuery">🔍 Buscar</button>
+
+@if (!string.IsNullOrEmpty(result.Suggestion)) {
+    <div class="suggestion">
+       
+        <p></p>
+        <p></p>
+    </div>
+}
+
+<ul class="results">
+@foreach (var item in result.Items()) {
+    <li>
+        <div class="item">
+            <p class="title"><a href = "@item.Path" target="_blank">@item.Title</a></p>
+            <p class = "snippet">@item.Snippet</p>
+        </div>
+    </li>
+}
+</ul>
+
+@code {
+    private string query = "";
+    private SearchResult result = new SearchResult();
+
+    private void RunQuery() {
+        result = Moogle.Query(query);
+    }
+}

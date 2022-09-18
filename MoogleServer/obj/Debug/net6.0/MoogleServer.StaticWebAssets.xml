@@ -1,0 +1,4 @@
+﻿<StaticWebAssets Version="1.0">
+  <ContentRoot BasePath="_content/MoogleServer" Path="C:\!!estudio\First_project_moogle-2021\MoogleServer\obj\Debug\net6.0\scopedcss\bundle\" />
+  <ContentRoot BasePath="_content/MoogleServer" Path="C:\!!estudio\First_project_moogle-2021\MoogleServer\obj\Debug\net6.0\scopedcss\projectbundle\" />
+</StaticWebAssets>
