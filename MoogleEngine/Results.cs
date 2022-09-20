@@ -75,7 +75,7 @@ namespace MoogleEngine
         
         }
 
-        public static string GetSnippet(string doc_path, Dictionary<string, double> query_tfidf, List<string> doc)
+       public static string GetSnippet(string doc_path, Dictionary<string, double> query_tfidf, List<string> doc)
         {
 
             List<string> query_list = OrderQueryTFIDF(query_tfidf);
@@ -92,25 +92,32 @@ namespace MoogleEngine
             {
                 if(doc.Contains(query_list[i]))
                 {
-                    int position = readed_doc_normalized.IndexOf(query_list[i] + " ");
+                    for(int m = 0; m<doc.Count; m++)
+                    {
+                        if(doc[m] == query_list[i])
+                        break;
+                    }
+                    int position = readed_doc_normalized.IndexOf(" " + query_list[i] + " ");
                     int last_position = 0;
 
-                    while(position == -1)
-                    {
-                        //TODO: FIX THIS
-                     if((!Char.IsLetter(readed_doc_normalized, readed_doc_normalized.IndexOf(query_list[i], last_position) + query_list[i].Length + 1)) && (!Char.IsLetter(readed_doc_normalized, readed_doc_normalized.IndexOf(query_list[i], last_position)-1)))
-                     {
-                        position = readed_doc_normalized.IndexOf(query_list[i], last_position);
+                    
+
+                    
+                        while(position == -1)
+                        {
+                    
+                            if(!Char.IsLetter(readed_doc_normalized, readed_doc_normalized.IndexOf(query_list[i], last_position) + query_list[i].Length) && !Char.IsLetter(readed_doc_normalized, readed_doc_normalized.IndexOf(query_list[i], last_position) - 1)) 
+                            {
+                                position = readed_doc_normalized.IndexOf(query_list[i], last_position);
+
+                            }
+                            else
+                            {
+                                last_position = readed_doc_normalized.IndexOf(query_list[i], last_position + query_list[i].Length);
+                            }
+
+                        }
                         
-                     }
-                     else
-                     {
-                        last_position = readed_doc_normalized.IndexOf(query_list[i], last_position + query_list[i].Length);
-                     }
-
-                    }
-
-
 
 
                     if(readed_doc_normalized.Length > position + 100)
@@ -131,7 +138,7 @@ namespace MoogleEngine
             }
 
             return snippet;
-    }
+        }
           
 
     }
