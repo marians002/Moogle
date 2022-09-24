@@ -1,8 +1,26 @@
 .results {
-    text-align: left;
+    text-align: inherit;
 }
 
 .item .title {
-    font-size: large;
-    font-weight: bold;
+    text-align:center;
+}
+
+h1{
+    font-family: 'Harry Potter', sans-serif;
+    font-size: 95px;
+    color: white;
+}
+
+.btn_sug
+{
+    background-color: transparent;
+    size: larger;
+    border-style: hidden;
+    color:white;
+    font-weight: bolder;
+}
+.btn_sug:hover
+{
+text-decoration: underline;
 }

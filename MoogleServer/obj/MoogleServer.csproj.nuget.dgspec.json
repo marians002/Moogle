@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/marian_susana/Documents/Moogle/Moogle! sin clases/MoogleServer/MoogleServer.csproj": {}
+    "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleServer/MoogleServer.csproj": {}
   },
   "projects": {
-    "/home/marian_susana/Documents/Moogle/Moogle! sin clases/MoogleEngine/MoogleEngine.csproj": {
+    "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleEngine/MoogleEngine.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/marian_susana/Documents/Moogle/Moogle! sin clases/MoogleEngine/MoogleEngine.csproj",
+        "projectUniqueName": "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleEngine/MoogleEngine.csproj",
         "projectName": "MoogleEngine",
-        "projectPath": "/home/marian_susana/Documents/Moogle/Moogle! sin clases/MoogleEngine/MoogleEngine.csproj",
+        "projectPath": "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleEngine/MoogleEngine.csproj",
         "packagesPath": "/home/marian_susana/.nuget/packages/",
-        "outputPath": "/home/marian_susana/Documents/Moogle/Moogle! sin clases/MoogleEngine/obj/",
+        "outputPath": "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleEngine/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/marian_susana/.nuget/NuGet/NuGet.Config"
@@ -57,14 +57,14 @@
         }
       }
     },
-    "/home/marian_susana/Documents/Moogle/Moogle! sin clases/MoogleServer/MoogleServer.csproj": {
+    "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleServer/MoogleServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/marian_susana/Documents/Moogle/Moogle! sin clases/MoogleServer/MoogleServer.csproj",
+        "projectUniqueName": "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleServer/MoogleServer.csproj",
         "projectName": "MoogleServer",
-        "projectPath": "/home/marian_susana/Documents/Moogle/Moogle! sin clases/MoogleServer/MoogleServer.csproj",
+        "projectPath": "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleServer/MoogleServer.csproj",
         "packagesPath": "/home/marian_susana/.nuget/packages/",
-        "outputPath": "/home/marian_susana/Documents/Moogle/Moogle! sin clases/MoogleServer/obj/",
+        "outputPath": "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleServer/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/marian_susana/.nuget/NuGet/NuGet.Config"
@@ -79,8 +79,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "/home/marian_susana/Documents/Moogle/Moogle! sin clases/MoogleEngine/MoogleEngine.csproj": {
-                "projectPath": "/home/marian_susana/Documents/Moogle/Moogle! sin clases/MoogleEngine/MoogleEngine.csproj"
+              "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleEngine/MoogleEngine.csproj": {
+                "projectPath": "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleEngine/MoogleEngine.csproj"
               }
             }
           }

@@ -1,8 +1,26 @@
-.results[b-56lu1l4lic] {
-    text-align: left;
+.results[b-3asepffdpk] {
+    text-align: inherit;
 }
 
-.item .title[b-56lu1l4lic] {
-    font-size: large;
-    font-weight: bold;
+.item .title[b-3asepffdpk] {
+    text-align:center;
+}
+
+h1[b-3asepffdpk]{
+    font-family: 'Harry Potter', sans-serif;
+    font-size: 95px;
+    color: white;
+}
+
+.btn_sug[b-3asepffdpk]
+{
+    background-color: transparent;
+    size: larger;
+    border-style: hidden;
+    color:white;
+    font-weight: bolder;
+}
+.btn_sug:hover[b-3asepffdpk]
+{
+text-decoration: underline;
 }

@@ -1,20 +1,21 @@
 ﻿@page "/"
 
 <PageTitle>Moogle!</PageTitle>
+<link href="http://fonts.cdnfonts.com/css/harry-potter" rel="stylesheet">
+                
 
-<footer style="text-align: right; font-size: 12px;">Moogle! by Marian S.</footer>
+<footer style="text-align: right; font-size: 12px; color: white;">Moogle! by Marian S.</footer>
 
-<h1>🔍 Moogle!</h1>
+<h1>🔍  Moogle!</h1>
 
-<input class="p-1 my-4" @bind="query" placeholder="Introduzca su búsqueda">
+<input type="search" class="p-1 my-4" @bind="query" @onkeyup = "EnterSearch" placeholder="Introduzca su búsqueda">
 
 <button type="default" class="btn btn-primary" @onclick="RunQuery">🔍 Buscar</button>
 
 @if (!string.IsNullOrEmpty(result.Suggestion)) {
     <div class="suggestion">
        
-        <p></p>
-        <p></p>
+        <p>¿Quisiste decir <button class = "btn_sug" @onclick="SearchSuggestion">@result.Suggestion</button>?</p>
     </div>
 }
 
@@ -22,7 +23,7 @@
 @foreach (var item in result.Items()) {
     <li>
         <div class="item">
-            <p class="title"><a href = "@item.Path" target="_blank">@item.Title</a></p>
+            <p class="title"><a href = "@item.Path">@item.Title</a></p>
             <p class = "snippet">@item.Snippet</p>
         </div>
     </li>
@@ -33,7 +34,22 @@
     private string query = "";
     private SearchResult result = new SearchResult();
 
-    private void RunQuery() {
-        result = Moogle.Query(query);
+    private void RunQuery()
+    {
+        int recursive_counter = 0;
+        result = Moogle.Query(query, recursive_counter);
+    }
+    private void SearchSuggestion()
+    {
+        result = Moogle.Query(result.Suggestion, 0);
+        query = result.Suggestion;
+    }
+
+    private void EnterSearch(KeyboardEventArgs param)
+    {
+        if(param.Key == "Enter")
+        {
+            RunQuery();
+        }
     }
 }

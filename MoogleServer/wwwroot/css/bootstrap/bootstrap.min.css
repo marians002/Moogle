@@ -89,7 +89,15 @@ body {
     background-color: var(--bs-body-bg);
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
-    background: radial-gradient(circle, rgb(136, 174, 205), rgb(163, 151, 239))    }
+    background-image: url("cool-background.png");
+}
+
+.suggestion
+{
+    color: white;
+    
+
+}
 
 hr {
     margin: 1rem 0;
@@ -209,8 +217,23 @@ address {
 ol,
 ul {
     padding-left: 2rem;
-    list-style-type: square;
+    list-style-type: none;
     text-align: left;
+}
+
+li
+{
+    color:white;
+    background-color: rgba(87, 166, 244, 0.388);
+    border-radius: 15px;
+    padding: 5px 2px 5px 2px;
+    margin:20px;
+
+}
+li:hover
+{
+    background-color: rgba(87, 166, 244, 0.477);
+
 }
 
 dl,
@@ -293,15 +316,15 @@ a:not([href]):not([class]):hover {
 
 
 .title{
-    font-size: 25px;
+    font-size: 30px;
     color: unset;
-    font:bolder;
     display: inline-block;
     border: dotted;
     border-radius: 5px;
-    padding: 5px;
+    padding: 5px 20px 5px 20px;
     font-weight: bolder;
     font-family: 'Times New Roman', Times, serif;
+    text-align: center;
 
 }
 
@@ -3191,7 +3214,8 @@ textarea.form-control.is-invalid {
     border: 1px solid transparent;
     padding: .370rem .75rem;
     font-size: 20px;
-    border-radius: 10px;
+    border-radius: 20px;
+    width: 150px;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
 }
 
@@ -8302,6 +8326,14 @@ fieldset:disabled .btn {
     padding: 6px !important;
     border-radius: 10px;
     margin-right:2px;
+    width: 700px;
+    opacity: 80%;
+    
+}
+.p-1:hover
+{
+    opacity: 100%;
+
 }
 
 .p-2 {
