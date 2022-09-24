@@ -2,7 +2,9 @@
 
 ![](moogle.png)
 
-> Proyecto de Programación I. Facultad de Matemática y Computación. Universidad de La Habana. Curso 2021.
+> Proyecto de Programación I.
+> Facultad de Matemática y Computación - Universidad de La Habana.
+> Cursos 2021, 2022.
 
 Moogle! es una aplicación *totalmente original* cuyo propósito es buscar inteligentemente un texto en un conjunto de documentos.
 
@@ -91,7 +93,7 @@ Si te sirve de algo, hace unos meses contratamos a un gurú de los algoritmos de
 
 ## Sobre la interfaz gráfica
 
-Como verás cuando ejecutes la aplicación (que se explica más abajo), la interfaz gráfica es bastante pobre. En principio, no tienes obligación de trabajar en esta parte del proyecto ( sabemos que ustedes los científicos de la computación están por encima de estas mundeces).
+Como verás cuando ejecutes la aplicación (que se explica más abajo), la interfaz gráfica es bastante pobre. En principio, no tienes obligación de trabajar en esta parte del proyecto (sabemos que ustedes los científicos de la computación están por encima de estas mundeces).
 
 Pero si nos quieres ayudar, eres libre de modificar la interfaz gráfica todo lo que desees, eso sí, siempre que se mantenga la idea original de la aplicación. Si te interesa aprender Blazor, HTML, o CSS, eres libre de jugar con el código de la interfaz gráfica, que está en el proyecto `MoogleServer`.
 
