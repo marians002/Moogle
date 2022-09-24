@@ -68,7 +68,15 @@ namespace MoogleEngine
                         tfidf_query.Add(word, 1);
                     }
                     else
-                        tfidf_query[word]++;                  
+                    {
+                        tfidf_query[word]++;
+                    }
+
+                    //Añadir los sinonimos al query
+
+                    
+                        
+                            
                 }
                 
                 
@@ -242,6 +250,61 @@ namespace MoogleEngine
                     }
                     
                 }
+        }
+
+        public static string Suggestions(Dictionary<string, double> IDF, List<string> query_list)
+        {
+            string[] nearest_words = new string[query_list.Count];
+            int distance;
+
+            for(int h = 0; h<query_list.Count; h++)
+            {
+                int comparer = int.MaxValue;
+
+                if(!IDF.ContainsKey(query_list[h]))
+                {
+                    foreach(KeyValuePair<string, double> word in IDF)
+                    {                            
+                        distance = HammilDistance(word.Key, query_list[h]);
+
+                        if(distance<comparer)
+                        {
+                            comparer = distance;
+                            nearest_words[h] = word.Key;
+                        }
+                    }
+                }
+                else
+                {
+                    nearest_words[h] = query_list[h];
+                }
+            }
+
+            return String.Join(' ' ,nearest_words);
+
+
+            static int HammilDistance(string a, string b)
+            {
+                int distance = 0;
+
+                if(a.Length > b.Length)
+                {
+                    string c = b;
+                    b = a;
+                    a = c;
+                }
+                    for(int i = 0; i<a.Length; i++)
+                    {
+                        
+                            if(a[i] != b[i])
+                            distance++;
+                        
+                
+                    }
+                    distance += Math.Abs(b.Length - a.Length);
+                    
+                return distance;
+            }
         }
 
     }

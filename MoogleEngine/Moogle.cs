@@ -3,7 +3,7 @@
 
 public static class Moogle
 {
-    public static SearchResult Query(string query) 
+    public static SearchResult Query(string query, int recursive_counter) 
     {
             
 
@@ -31,12 +31,17 @@ public static class Moogle
        
             //Devuelve la posicion que ocupan los documentos mas relevantes.
             //Si ningun documento se corresponde con el query, devuelve -1. 
-            int[] docs_positions = Results.GetArrayLongestPositions(cosine_similarity);
+            int[] docs_positions = Results.GetHighestArrayPositions(cosine_similarity);
+
+            
+            string suggestions = "";
+            
+            
 
 
 
             //Si existen resultados, muestra un fragmento de cada documento donde aparezca parte
-            //del query. En caso de no existir resultados, imprime que no se encontraron resultados.
+            //del query. En caso de no existir resultados, busca sinonimos.
             if(docs_positions[0] != -1)
             {
                 
@@ -52,20 +57,46 @@ public static class Moogle
          
                 
                 }
-                return new SearchResult(items, query);
+                
+                return new SearchResult(items, suggestions);
                 
             }
             
-            else
-            {
-              SearchItem[] items = new SearchItem[1];
-              items[0] = new SearchItem("No se encontraron resultados", "Pruebe a hacer otra búsqueda", 0, "#");
-              return new SearchResult(items, query);
+            else if(recursive_counter<1)
+            {           
+               
 
+                    foreach(string word in query_list)
+                    {
+                        try
+                        {
 
+                            string[] synonyms = Start.Synonyms[word];
+
+                            for(int i = 0; i<synonyms.Length; i++)  
+                            {
+                                query+= " " + synonyms[i];
+                            }
+                         
+                        }
+                        catch(KeyNotFoundException ex){}
+                    }
+                    
+                    recursive_counter++;
+                    return Query(query, recursive_counter);
             }
 
+            else
+            {  
+                suggestions = SearchQuery.Suggestions(Start.IDF, query_list);
+                
+                SearchItem[] items = new SearchItem[1];
+                items[0] = new SearchItem("No se encontraron resultados", "Pruebe a hacer otra búsqueda", 0, "#");
+                return new SearchResult(items, suggestions);
+            }
+ 
 
     }
+    
 }
 

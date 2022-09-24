@@ -3,7 +3,7 @@ namespace MoogleEngine
 
     internal static class Results
     {
-        public static int[] GetArrayLongestPositions(double[] cosine_similarity)
+        public static int[] GetHighestArrayPositions(double[] cosine_similarity)
         {
 
             List<int> longest_positions = new();
@@ -75,6 +75,9 @@ namespace MoogleEngine
         
         }
 
+
+        
+
        public static string GetSnippet(string doc_path, Dictionary<string, double> query_tfidf, List<string> doc)
         {
 
@@ -120,25 +123,32 @@ namespace MoogleEngine
                         
 
 
-                    if(readed_doc_normalized.Length > position + 100)
+                    if(readed_doc_normalized.Length > position + 200)
                     {
-                        snippet = "..." + readed_doc.Substring(position, 100) + "...";
+                        snippet = "..." + readed_doc.Substring(position, 200);
+                        for(int k = position+200 ; k<readed_doc_normalized.Length && Char.IsLetter(readed_doc[k]); k++)
+                        {
+                            snippet += readed_doc[k];
+                        }
+                        snippet += "...";
                     }
-                    else if(readed_doc_normalized.Length > position + 25)
-                    {
-                        snippet = "..." + readed_doc.Substring(position, 25) + "...";
-
-                    }
+                    
                     else
                     {
                         snippet = "..." + readed_doc.Substring(position, readed_doc.Length-position);
                     }
                     break;
+
+                    
                 }
             }
 
             return snippet;
         }
+        
+        
+
+        
           
 
     }

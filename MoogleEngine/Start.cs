@@ -1,4 +1,6 @@
+using System.Text.Json;
 namespace MoogleEngine
+
 {
 
 
@@ -16,12 +18,14 @@ namespace MoogleEngine
         internal static List<Dictionary<string, double>> tfidf_list = new();
         //Crea el array para la magnitud de los documentos
         internal static double[]? docs_magnitude;
+        //Crea y almacena el diccionario para los sinonimos:
+        internal static Dictionary<string, string[]> Synonyms = JsonSerializer.Deserialize<Dictionary<string, string[]>>(File.ReadAllText(Directory.GetCurrentDirectory() + "/synonyms.json"));
 
-            
             
 
         public static void LoadFiles()
         {
+             
             //Almacena la lista de listas.
             list_of_lists = Start.TxtReader();
             //Comienza a calcular tfidf.
@@ -33,6 +37,7 @@ namespace MoogleEngine
 
         }
 
+        
         //Devuelve una lista de los documentos que contiene, a su vez, una lista de cada palabra
         //en el documento. 
         public static List<List<string>> TxtReader()
