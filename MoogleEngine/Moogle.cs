@@ -3,7 +3,7 @@
 
 public static class Moogle
 {
-    public static SearchResult Query(string query, int recursive_counter) 
+    public static SearchResult Query(string query, int recursive_counter, string suggestions_param) 
     {
             
 
@@ -34,7 +34,6 @@ public static class Moogle
             int[] docs_positions = Results.GetHighestArrayPositions(cosine_similarity);
 
             
-            string suggestions = "";
             
             
 
@@ -43,8 +42,10 @@ public static class Moogle
             //Si existen resultados, muestra un fragmento de cada documento donde aparezca parte
             //del query. En caso de no existir resultados, busca sinonimos.
             if(docs_positions[0] != -1)
-            {
-                
+            {            
+                //string suggestions = "";   
+              //  suggestions_param = SearchQuery.Suggestions(Start.IDF, query_list);
+             
   
                 string[] docs_path = Results.MostImportantDocs(cosine_similarity, docs_positions);
                 string[] snippets = new string[docs_path.Length];
@@ -58,14 +59,14 @@ public static class Moogle
                 
                 }
                 
-                return new SearchResult(items, suggestions);
+                return new SearchResult(items, suggestions_param);
                 
             }
             
             else if(recursive_counter<1)
             {           
                
-
+                    suggestions_param = SearchQuery.Suggestions(Start.IDF, query_list);
                     foreach(string word in query_list)
                     {
                         try
@@ -83,16 +84,16 @@ public static class Moogle
                     }
                     
                     recursive_counter++;
-                    return Query(query, recursive_counter);
+                    return Query(query, recursive_counter, suggestions_param);
             }
 
             else
             {  
-                suggestions = SearchQuery.Suggestions(Start.IDF, query_list);
+               // string suggestions = SearchQuery.Suggestions(Start.IDF, query_list);
                 
                 SearchItem[] items = new SearchItem[1];
                 items[0] = new SearchItem("No se encontraron resultados", "Pruebe a hacer otra búsqueda", 0, "#");
-                return new SearchResult(items, suggestions);
+                return new SearchResult(items, suggestions_param);
             }
  
 

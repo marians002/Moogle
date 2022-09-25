@@ -179,7 +179,7 @@ namespace MoogleEngine
 
         }
 
-
+        //Calcula la magnitud de los documentos.
         public static double[] DocumentsMagnitude(List<Dictionary<string, double>> docs_tfidf)
         {
             double[] docs_magnitude = new double[docs_tfidf.Count];
