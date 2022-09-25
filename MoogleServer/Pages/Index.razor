@@ -2,7 +2,8 @@
 
 <PageTitle>Moogle!</PageTitle>
 <link href="http://fonts.cdnfonts.com/css/harry-potter" rel="stylesheet">
-                
+<link rel="icon" type="image/x-icon" href="/home/marian_susana/Documents/Moogle/Mooooogle/MoogleServer/wwwroot/favicon.ico">
+
 
 <footer style="text-align: right; font-size: 12px; color: white;">Moogle! by Marian S.</footer>
 
@@ -37,11 +38,11 @@
     private void RunQuery()
     {
         int recursive_counter = 0;
-        result = Moogle.Query(query, recursive_counter);
+        result = Moogle.Query(query, recursive_counter, "");
     }
     private void SearchSuggestion()
     {
-        result = Moogle.Query(result.Suggestion, 0);
+        result = Moogle.Query(result.Suggestion, 0, "");
         query = result.Suggestion;
     }
 
