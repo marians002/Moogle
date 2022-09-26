@@ -1,4 +1,6 @@
-﻿namespace MoogleEngine;
+﻿//Moogle by Marian S. C121.
+//
+namespace MoogleEngine;
 
 
 public static class Moogle
