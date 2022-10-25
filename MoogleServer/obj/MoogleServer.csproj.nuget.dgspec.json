@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleServer/MoogleServer.csproj": {}
+    "/home/marian_susana/Documents/Moogle/Moogle/MoogleServer/MoogleServer.csproj": {}
   },
   "projects": {
-    "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleEngine/MoogleEngine.csproj": {
+    "/home/marian_susana/Documents/Moogle/Moogle/MoogleEngine/MoogleEngine.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleEngine/MoogleEngine.csproj",
+        "projectUniqueName": "/home/marian_susana/Documents/Moogle/Moogle/MoogleEngine/MoogleEngine.csproj",
         "projectName": "MoogleEngine",
-        "projectPath": "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleEngine/MoogleEngine.csproj",
+        "projectPath": "/home/marian_susana/Documents/Moogle/Moogle/MoogleEngine/MoogleEngine.csproj",
         "packagesPath": "/home/marian_susana/.nuget/packages/",
-        "outputPath": "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleEngine/obj/",
+        "outputPath": "/home/marian_susana/Documents/Moogle/Moogle/MoogleEngine/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/marian_susana/.nuget/NuGet/NuGet.Config"
@@ -53,18 +53,18 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.401/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.402/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleServer/MoogleServer.csproj": {
+    "/home/marian_susana/Documents/Moogle/Moogle/MoogleServer/MoogleServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleServer/MoogleServer.csproj",
+        "projectUniqueName": "/home/marian_susana/Documents/Moogle/Moogle/MoogleServer/MoogleServer.csproj",
         "projectName": "MoogleServer",
-        "projectPath": "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleServer/MoogleServer.csproj",
+        "projectPath": "/home/marian_susana/Documents/Moogle/Moogle/MoogleServer/MoogleServer.csproj",
         "packagesPath": "/home/marian_susana/.nuget/packages/",
-        "outputPath": "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleServer/obj/",
+        "outputPath": "/home/marian_susana/Documents/Moogle/Moogle/MoogleServer/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/marian_susana/.nuget/NuGet/NuGet.Config"
@@ -79,8 +79,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleEngine/MoogleEngine.csproj": {
-                "projectPath": "/home/marian_susana/Documents/Moogle/Mooooogle/MoogleEngine/MoogleEngine.csproj"
+              "/home/marian_susana/Documents/Moogle/Moogle/MoogleEngine/MoogleEngine.csproj": {
+                "projectPath": "/home/marian_susana/Documents/Moogle/Moogle/MoogleEngine/MoogleEngine.csproj"
               }
             }
           }
@@ -113,7 +113,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.401/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.402/RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -40,14 +40,14 @@ public static class Moogle
             //del query. En caso de no existir resultados, busca sinonimos.
             if(docs_positions[0] != -1)
             {            
-                //string suggestions = "";   
-              //  suggestions_param = SearchQuery.Suggestions(Start.IDF, query_list);
-             
-  
+                //Devuelve la ruta de los documentos más importantes.
                 string[] docs_path = Results.MostImportantDocs(cosine_similarity, docs_positions);
+
                 string[] snippets = new string[docs_path.Length];
+
                 SearchItem[] items = new SearchItem[snippets.Length];
 
+                //Almacena un fragmento de texto donde se encuentre parte de la búsqueda realizada
                 for(int i = 0; i<items.Length; i++)
                 {
                     snippets[i] = Results.GetSnippet(docs_path[i], query_tfidf, Start.list_of_lists[docs_positions[i]]);           
@@ -64,6 +64,7 @@ public static class Moogle
             {           
                
                     suggestions_param = SearchQuery.Suggestions(Start.IDF, query_list);
+                 
                     foreach(string word in query_list)
                     {
                         try
@@ -86,7 +87,6 @@ public static class Moogle
 
             else
             {  
-               // string suggestions = SearchQuery.Suggestions(Start.IDF, query_list);
                 
                 SearchItem[] items = new SearchItem[1];
                 items[0] = new SearchItem("No se encontraron resultados", "Pruebe a hacer otra búsqueda", 0, "#");

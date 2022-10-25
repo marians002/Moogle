@@ -153,11 +153,6 @@ namespace MoogleEngine
 
                 }
 
-
-        
-
-            
-
         }
         public static List<Dictionary<string, double>> TFIDF(Dictionary<string, double> idf, List<Dictionary<string, double>> tf_list)
         {
