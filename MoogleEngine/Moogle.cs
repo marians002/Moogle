@@ -35,11 +35,6 @@ public static class Moogle
             //Si ningun documento se corresponde con el query, devuelve -1. 
             int[] docs_positions = Results.GetHighestArrayPositions(cosine_similarity);
 
-            
-            
-            
-
-
 
             //Si existen resultados, muestra un fragmento de cada documento donde aparezca parte
             //del query. En caso de no existir resultados, busca sinonimos.
