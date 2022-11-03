@@ -4,6 +4,7 @@ namespace MoogleEngine
     internal static class SearchQuery
     {
 
+        //Devuelve los operadores empleados y las palabras que los contienen.
         public static (bool[], bool[], int[], bool, string word1, string word2) OperatorsUsed(List<string> query)
         {
             bool[] most_appear_operator = new bool[query.Count];
@@ -21,12 +22,14 @@ namespace MoogleEngine
                     query[i] = query[i].Remove(0, 1);
 
                 }
+                
                 else if(query[i][0] == '!')
                 {
                     cant_appear_operator[i] = true;
                     query[i] = query[i].Remove(0, 1);
 
                 }
+                
                 else 
                 {
                     for (int j = 0; j<query[i].Length; j++)
@@ -55,7 +58,7 @@ namespace MoogleEngine
             return (most_appear_operator, cant_appear_operator, importance_operator, proximity_operator, word1, word2);
         }
 
-
+        //Calcula TFIDF de la query unicamente
         public static Dictionary<string, double> TFIDF(Dictionary<string, double> idf, List<string> query)
         {
 
@@ -71,11 +74,6 @@ namespace MoogleEngine
                     {
                         tfidf_query[word]++;
                     }
-
-                    //Añadir los sinonimos al query
-
-                    
-                        
                             
                 }
                 
@@ -97,6 +95,7 @@ namespace MoogleEngine
             return tfidf_query;
         }
 
+        //Calcula la magnitud del query
         public static double QueryMagnitude(Dictionary<string, double> tfidf_query)
         {
             double sum_query = 0;
@@ -109,6 +108,7 @@ namespace MoogleEngine
             return Math.Sqrt(sum_query);
         }    
 
+        //Calcula los cosenos de los angulos entre los vectores
         public static double[] CosineSimilarity(Dictionary<string, double> query_tfidf, List<Dictionary<string, double>> tfidf_list, double query_magnitude, double[] docs_magnitude)
         {
 
@@ -145,6 +145,7 @@ namespace MoogleEngine
             return cosine_similarity;
         }
 
+        //Modifica la similitud de cosenos segun los operadores empleados
         public static void Operators(double[] cosine_similarity, (bool[], bool[], int[], bool, string, string) operators_in_words, List<string> query, List<Dictionary<string, double>> tfidf_list, List<List<string>> list_of_lists)
         {            
 
@@ -192,6 +193,8 @@ namespace MoogleEngine
                 Proximity_Operator(cosine_similarity, operators_in_words.Item5, operators_in_words.Item6, query, tfidf_list, list_of_lists);
             }
         }
+        
+        //Modifica la similitud de cosenos por el operador de cercania (si fue usado).
         public static void Proximity_Operator(double[] cosine_similarity, string word1, string word2, List<string> query, List<Dictionary<string, double>> tfidf_list, List<List<string>> list_of_lists)
         {
                 for(int i=0; i<tfidf_list.Count; i++)
@@ -252,6 +255,8 @@ namespace MoogleEngine
                 }
         }
 
+        //Devuelve las palabras mas cercanas a la busqueda realizada
+        //que esten contenidas dentro de los documentos.
         public static string Suggestions(Dictionary<string, double> IDF, List<string> query_list)
         {
             string[] nearest_words = new string[query_list.Count];
@@ -283,6 +288,7 @@ namespace MoogleEngine
             return String.Join(' ' ,nearest_words);
 
 
+            //Calcula la Distancia Hammil que existe entre las palabras
             static int HammilDistance(string a, string b)
             {
                 int distance = 0;

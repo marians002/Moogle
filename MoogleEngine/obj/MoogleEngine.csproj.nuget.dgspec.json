@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/marian_susana/Documents/Moogle/Moogle/MoogleEngine/MoogleEngine.csproj": {}
+    "/home/marian_susana/Desktop/Moogle/MoogleEngine/MoogleEngine.csproj": {}
   },
   "projects": {
-    "/home/marian_susana/Documents/Moogle/Moogle/MoogleEngine/MoogleEngine.csproj": {
+    "/home/marian_susana/Desktop/Moogle/MoogleEngine/MoogleEngine.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/marian_susana/Documents/Moogle/Moogle/MoogleEngine/MoogleEngine.csproj",
+        "projectUniqueName": "/home/marian_susana/Desktop/Moogle/MoogleEngine/MoogleEngine.csproj",
         "projectName": "MoogleEngine",
-        "projectPath": "/home/marian_susana/Documents/Moogle/Moogle/MoogleEngine/MoogleEngine.csproj",
+        "projectPath": "/home/marian_susana/Desktop/Moogle/MoogleEngine/MoogleEngine.csproj",
         "packagesPath": "/home/marian_susana/.nuget/packages/",
-        "outputPath": "/home/marian_susana/Documents/Moogle/Moogle/MoogleEngine/obj/",
+        "outputPath": "/home/marian_susana/Desktop/Moogle/MoogleEngine/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/marian_susana/.nuget/NuGet/NuGet.Config"

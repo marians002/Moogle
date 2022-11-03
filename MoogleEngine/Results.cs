@@ -3,6 +3,8 @@ namespace MoogleEngine
 
     internal static class Results
     {
+
+        //Devuelve la posicion que ocupan los documentos mas importantes.
         public static int[] GetHighestArrayPositions(double[] cosine_similarity)
         {
 
@@ -44,6 +46,7 @@ namespace MoogleEngine
             }
         }
 
+        //Devuelve la ruta de los documentos con mayor TFIDF
         public static string[] MostImportantDocs(double[] cosines, int[] highest_docs_positions)
         {
 
@@ -58,6 +61,8 @@ namespace MoogleEngine
                 return highest_TFIDF_docs;
 
         }
+
+        //Devuelve una lista ordenada del TFIDF de los documentos de mayor a menor
         public static List<string> OrderQueryTFIDF(Dictionary<string, double> query_tfidf)
         {
            
@@ -74,10 +79,8 @@ namespace MoogleEngine
 
         
         }
-
-
         
-
+        //Devuelve un fragmento del documento original donde se encontro el query (o parte de el).
        public static string GetSnippet(string doc_path, Dictionary<string, double> query_tfidf, List<string> doc)
         {
 
@@ -91,8 +94,11 @@ namespace MoogleEngine
            
             string snippet = "";
            
+            
             for(int i = 0; i<query_list.Count; i++)
             {
+
+                //Va recorriendo el documento hasta que encuentre una de las palabras del query.
                 if(doc.Contains(query_list[i]))
                 {
                     for(int m = 0; m<doc.Count; m++)
@@ -100,12 +106,11 @@ namespace MoogleEngine
                         if(doc[m] == query_list[i])
                         break;
                     }
+                    
                     int position = readed_doc_normalized.IndexOf(" " + query_list[i] + " ");
                     int last_position = 0;
 
-                    
 
-                    
                         while(position == -1)
                         {
                     
@@ -146,10 +151,6 @@ namespace MoogleEngine
             return snippet;
         }
         
-        
-
-        
-          
 
     }
 }

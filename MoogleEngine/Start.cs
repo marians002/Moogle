@@ -22,7 +22,7 @@ namespace MoogleEngine
         internal static Dictionary<string, string[]> Synonyms = JsonSerializer.Deserialize<Dictionary<string, string[]>>(File.ReadAllText(Directory.GetCurrentDirectory() + "/synonyms.json"));
 
             
-
+        //Realiza todo el preprocesamiento necesario
         public static void LoadFiles()
         {
              
@@ -36,7 +36,6 @@ namespace MoogleEngine
             docs_magnitude = Start.DocumentsMagnitude(tfidf_list);
 
         }
-
         
         //Devuelve una lista de los documentos que contiene, a su vez, una lista de cada palabra
         //en el documento. 
@@ -74,6 +73,8 @@ namespace MoogleEngine
 
             return Directory.GetFiles(path, "*.txt", SearchOption.AllDirectories);
         }
+
+        //Devuelve una lista de las palabras separadas
         public static List<string> WordsSeparator(string s, char[] separators)
         {
             s = Normalize(s);
@@ -93,7 +94,7 @@ namespace MoogleEngine
 
         }
 
-
+        //Calcula TF e IDF de los documentos.
         public static void TFIDF_Calculator(Dictionary<string, double> IDF, List<Dictionary<string, double>> TF_list, List<List<string>> list_of_lists)
         {
             /*Añadir a la lista de diccionarios de TF la cantidad de veces
@@ -154,6 +155,8 @@ namespace MoogleEngine
                 }
 
         }
+        
+        //Devuelve el TFIDF final de todos los documentos.
         public static List<Dictionary<string, double>> TFIDF(Dictionary<string, double> idf, List<Dictionary<string, double>> tf_list)
         {
 
